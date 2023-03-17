@@ -1,19 +1,30 @@
 import logging
+import markups as nav
 from aiogram import Bot, Dispatcher, executor, types
-from token import TOKEN
+from tokens import TOKEN
 from words import WORDS
+from config import CHANNEL_ID
+
 
 logging.basicConfig(level=logging.INFO)
 
 bot = Bot(TOKEN)
 dp = Dispatcher(bot)
 
+def chech_sub_channel(chat_member):
+    return chat_member['status'] != 'left'
+
 @dp.message_handler()
 async def mess_handler(message: types.Message):
-    text = message.text.lower()
-    for word in WORDS:
-        if word in text:
-            await message.delete()
+
+    if chech_sub_channel(await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=message.from_user.id)):
+        text = message.text.lower()
+        for word in WORDS:
+            if word in text:
+                await message.delete()
+    else:
+        await message.answer('Тебе следует подписаться на канал Бишопа, бро. Перед тем, как оставлять свои комменты здесь', reply_markup=nav.channel_menu)
+        await message.delete()
 
 """
 #Узнать ID 
