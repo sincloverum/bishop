@@ -14,6 +14,10 @@ dp = Dispatcher(bot)
 def chech_sub_channel(chat_member):
     return chat_member['status'] != 'left'
 
+@dp.message_handler(content_types=["new_chat_members"])
+async def handler_new_member(message: types.Message):
+    await message.answer('Привет!\nМы тебе рады!\n✔️Мы будем вынуждены удалять всех, кто не представляется в чате, кого мы не можем идентифицировать — ради нашей общей безопасности. ✔️Представься, пожалуйста, если хочешь остаться в группе\n♥️ Это нужно сделать ОДИН раз, мы вас запишем, и вы навсегда останетесь в чате.\n❗️Если ты первый раз в группе Анонимных Алкоголиков — напиши, что ты «новичок»')
+
 @dp.message_handler()
 async def mess_handler(message: types.Message):
 
